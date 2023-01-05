@@ -1,15 +1,16 @@
 <template>
   <div class="container">
-    <Header title="Task tracker"/>
-    <Tasks :tasks="tasks" />
+    <Header title="Task tracker" />
+    <Tasks @delete-task="deleteTask" :tasks="tasks" />
   </div>
 </template>
 
 <script lang="ts">
+import { defineComponent } from 'vue';
 import Header from './components/Header.vue';
 import Tasks from './components/Tasks.vue';
 
-export default {
+export default defineComponent({
   name: 'App',
   components: {
     Header,
@@ -39,18 +40,27 @@ export default {
       ],
     };
   },
-};
+  methods: {
+    deleteTask(id: number) {
+      if (window.confirm('Are you sure?')) {
+        this.tasks = this.tasks.filter((task) => task.id !== id);
+        return true;
+      }
+      return false;
+    },
+  },
+});
 </script>
 
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap');
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 body {
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 .container {
   max-width: 500px;
