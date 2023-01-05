@@ -1,16 +1,45 @@
 <template>
   <div class="container">
-    <h1>Hello world</h1>
+    <Header title="Task tracker"/>
+    <Tasks :tasks="tasks" />
   </div>
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import Header from './components/Header.vue';
+import Tasks from './components/Tasks.vue';
 
-@Options({
-  components: {},
-})
-export default class App extends Vue {}
+export default {
+  name: 'App',
+  components: {
+    Header,
+    Tasks,
+  },
+  data() {
+    return {
+      tasks: [
+        {
+          id: 1,
+          text: 'Doctors appointment',
+          day: 'March 1st at 2:30pm',
+          reminder: true,
+        },
+        {
+          id: 2,
+          text: 'Meeting at School',
+          day: 'March 3rd at 1:30pm',
+          reminder: true,
+        },
+        {
+          id: 3,
+          text: 'Food Shopping',
+          day: 'March 3rd at 11:00am',
+          reminder: false,
+        },
+      ],
+    };
+  },
+};
 </script>
 
 <style>
