@@ -1,13 +1,12 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
+  <h1>Hello world</h1>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 
 @Options({
-  components: {
-  },
+  components: {},
 })
 export default class App extends Vue {}
 </script>
