@@ -1,18 +1,15 @@
 <template>
   <div class="container">
     <Header @toggle-add-task="toggleAddTask" title="Task tracker" :showAddTask="showAddTask" />
-    <div v-if="showAddTask">
-      <AddTask @add-task="addTask" />
-    </div>
-    <Tasks @toggle-reminder="toggleReminder" @delete-task="deleteTask" :tasks="tasks" />
+    <router-view :showAddTask="showAddTask"></router-view>
+    <Footer />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import Header from './components/Header.vue';
-import Tasks from './components/Tasks.vue';
-import AddTask from './components/AddTask.vue';
+import Footer from './components/Footer.vue';
 
 export declare interface Task {
   id: number;
@@ -23,54 +20,21 @@ export declare interface Task {
 
 export default defineComponent({
   name: 'App',
-  async created() {
-    const tasks = await this.fetchTasks();
-    this.tasks = tasks;
-    console.log('Component has been created!', tasks);
-  },
   unmounted() {
     console.log('Component has been destroyed!');
   },
   components: {
     Header,
-    Tasks,
-    AddTask,
+    Footer,
   },
   data() {
     return {
-      tasks: [] as Task[],
       showAddTask: false,
     };
   },
   methods: {
     toggleAddTask() {
       this.showAddTask = !this.showAddTask;
-    },
-    addTask(task: any) {
-      this.tasks = [...this.tasks, task];
-    },
-    toggleReminder(id: number) {
-      this.tasks = this.tasks.map((task: Task) => (task.id === id
-        ? {
-          ...task,
-          reminder: !task.reminder,
-        }
-        : task));
-    },
-    deleteTask(id: number) {
-      if (window.confirm('Are you sure you want to delete the task?')) {
-        this.tasks = this.tasks.filter((task) => task.id !== id);
-      }
-    },
-    async fetchTasks() {
-      const res = await fetch('api/tasks');
-      const data = await res.json();
-      return data;
-    },
-    async fetchTask(id:number) {
-      const res = await fetch(`api/tasks/${id}`);
-      const data = await res.json();
-      return data;
     },
   },
 });
