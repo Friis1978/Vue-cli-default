@@ -14,8 +14,23 @@ import Header from './components/Header.vue';
 import Tasks from './components/Tasks.vue';
 import AddTask from './components/AddTask.vue';
 
+export declare interface Task {
+  id: number;
+  text: string;
+  day: string;
+  reminder: boolean;
+}
+
 export default defineComponent({
   name: 'App',
+  async created() {
+    const tasks = await this.fetchTasks();
+    this.tasks = tasks;
+    console.log('Component has been created!', tasks);
+  },
+  unmounted() {
+    console.log('Component has been destroyed!');
+  },
   components: {
     Header,
     Tasks,
@@ -23,26 +38,7 @@ export default defineComponent({
   },
   data() {
     return {
-      tasks: [
-        {
-          id: 1,
-          text: 'Doctors appointment',
-          day: 'March 1st at 2:30pm',
-          reminder: true,
-        },
-        {
-          id: 2,
-          text: 'Meeting at School',
-          day: 'March 3rd at 1:30pm',
-          reminder: true,
-        },
-        {
-          id: 3,
-          text: 'Food Shopping',
-          day: 'March 3rd at 11:00am',
-          reminder: false,
-        },
-      ],
+      tasks: [] as Task[],
       showAddTask: false,
     };
   },
@@ -50,18 +46,31 @@ export default defineComponent({
     toggleAddTask() {
       this.showAddTask = !this.showAddTask;
     },
-    addTask(task:any) {
+    addTask(task: any) {
       this.tasks = [...this.tasks, task];
     },
     toggleReminder(id: number) {
-      this.tasks = this.tasks.map((task) => (task.id === id ? {
-        ...task, reminder: !task.reminder,
-      } : task));
+      this.tasks = this.tasks.map((task: Task) => (task.id === id
+        ? {
+          ...task,
+          reminder: !task.reminder,
+        }
+        : task));
     },
     deleteTask(id: number) {
       if (window.confirm('Are you sure you want to delete the task?')) {
         this.tasks = this.tasks.filter((task) => task.id !== id);
       }
+    },
+    async fetchTasks() {
+      const res = await fetch('api/tasks');
+      const data = await res.json();
+      return data;
+    },
+    async fetchTask(id:number) {
+      const res = await fetch(`api/tasks/${id}`);
+      const data = await res.json();
+      return data;
     },
   },
 });

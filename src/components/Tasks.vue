@@ -9,6 +9,7 @@
 </template>
 
 <script lang="ts">
+import { Task as TaskObj } from '@/App.vue';
 import { defineComponent } from 'vue';
 import Task from './Task.vue';
 
@@ -16,7 +17,7 @@ export default defineComponent({
   name: 'TasksItem',
   props: {
     tasks: {
-      type: Array as () => Array<{ id: number; text: string; day: string; reminder: boolean }>,
+      type: Array as () => Array<TaskObj>,
     },
   },
   components: {
