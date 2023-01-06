@@ -12,14 +12,16 @@
 </template>
 
 <script lang="ts">
-export default {
+import { defineComponent } from 'vue';
+
+export default defineComponent({
   name: 'TaskItem',
   props: {
     task: {
       type: Object as () => { id: number; text: string; day: string; reminder: boolean },
     },
   },
-};
+});
 </script>
 
 <style scope>

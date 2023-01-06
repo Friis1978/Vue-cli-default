@@ -9,9 +9,10 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from 'vue';
 import Task from './Task.vue';
 
-export default {
+export default defineComponent({
   name: 'TasksItem',
   props: {
     tasks: {
@@ -22,5 +23,5 @@ export default {
     Task,
   },
   emits: ['delete-task', 'toggle-reminder'],
-};
+});
 </script>
